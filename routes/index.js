@@ -23,26 +23,29 @@ router.post('/', function(req, res, next) {
 
     nightmare
         .goto('http://instagram.com')
-        .wait('._fcn8k')
-        .click('._fcn8k')
+        .wait('a[href="javascript:;"]')
+        .click('a[href="javascript:;"]') // log in option
         .wait('input[name=username]')
         .insert('input[name=username]', username)
         .insert('input[name=password]', password)
-        .click('._ah57t')
-        .wait('._9x5sw')
-        .insert('._9x5sw', search)
-        .wait('._k2vj6')
-        .click('._k2vj6')
-        .wait('._8mlbc')
-        .click('._8mlbc')
-        .wait('._ebwb5');
+        .click('button') // btn login
+        .wait('input[placeholder=Search]')
+        .insert('input[placeholder=Search]', search)
+        .wait('._gimca')
+        .click('._gimca') // top suggest
+        // .wait(`a[href*=${search}]`)
+        .wait(5000)
+        .end()
+        .wait('._mck9w')
+        .click('._mck9w a') // click post
+        .wait('._eszkz');
 
     for (var i = 0; i < posts; i++) {
         nightmare.wait(1000)
-            .click('._ebwb5')
-            .insert('._7uiwk', comment)
-            .type('._7uiwk', '\u000d')
-            .click('._de018');
+            .click('._eszkz') // like
+            .insert('._bilrf', comment) // comment
+            .type('._bilrf', '\u000d')
+            .click('._3a693'); // next
     }
 
     nightmare
