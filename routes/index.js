@@ -1,25 +1,25 @@
-var express = require('express');
-var path = require('path');
-var Nightmare = require('nightmare');
-var router = express.Router();
-var nightmare = Nightmare({
+const express = require('express');
+const path = require('path');
+const Nightmare = require('nightmare');
+const router = express.Router();
+const nightmare = Nightmare({
     'show' : true,
     webPreferences: {
         partition: 'nopersist'
-    }
+    },
 });
 
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/../views/home.html'));
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', function(req, res) {
 
-    var username = req.body.username;
-    var password = req.body.password;
-    var search = req.body.search;
-    var comment = req.body.comment;
-    var posts = req.body.posts;
+    const username = req.body.username;
+    const password = req.body.password;
+    const search = req.body.search;
+    const comment = req.body.comment;
+    const posts = req.body.posts;
 
     nightmare
         .goto('http://instagram.com')
@@ -40,7 +40,7 @@ router.post('/', function(req, res, next) {
         .click('._mck9w a') // click post
         .wait('._eszkz');
 
-    for (var i = 0; i < posts; i++) {
+    for (let i = 0; i < posts; i++) {
         nightmare.wait(1000)
             .click('._eszkz') // like
             .insert('._bilrf', comment) // comment
@@ -54,7 +54,7 @@ router.post('/', function(req, res, next) {
         .then(function () {
             res.json({status:'success'});
         })
-        .catch(function (error) {
+        .catch(function () {
             res.json({status:'success'});
         });
 });
