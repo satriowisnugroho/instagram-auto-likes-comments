@@ -3,18 +3,18 @@ const path = require('path');
 const co = require('co');
 const Nightmare = require('nightmare');
 const router = express.Router();
-const nightmare = Nightmare({
-    show: true,
-    webPreferences: {
-        partition: 'nopersist'
-    },
-});
 
 router.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/../views/home.html'));
 });
 
 router.post('/', function (req, res) {
+    const nightmare = Nightmare({
+        show: true,
+        webPreferences: {
+            partition: 'nopersist'
+        },
+    });
 
     const username = req.body.username;
     const password = req.body.password;
