@@ -3,7 +3,7 @@ const path = require('path');
 const Nightmare = require('nightmare');
 const router = express.Router();
 const nightmare = Nightmare({
-    'show' : true,
+    show : true,
     webPreferences: {
         partition: 'nopersist'
     },
