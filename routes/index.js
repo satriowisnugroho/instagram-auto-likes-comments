@@ -22,10 +22,10 @@ router.post('/', function (req, res) {
     const comment = req.body.comment;
     const posts = req.body.posts;
 
-    const searchSelector = 'input[placeholder=Search]';
+    const searchSelector = 'input[placeholder="Search"]'; // "Search" is text in findline in your language(e.g.: "Search", "Поиск")
     const heartClass = 'coreSpriteHeartOpen';
     const spriteComment = '.coreSpriteComment';
-    const commentSelector = 'textarea[placeholder="Add a comment…"]';
+    const commentSelector = 'textarea[placeholder="Add a comment..."]'; // "Add a comment..." is text in form for comment in your language("..." required)
 
     function *run() {
         const topPostClass = yield nightmare
@@ -38,13 +38,14 @@ router.post('/', function (req, res) {
             .click('button') // login button
             .wait(searchSelector)
             .insert(searchSelector, search)
+            .wait('div div a')
             .wait(1000)
             .evaluate(function (selector) {
                 const node = document.querySelector(selector).parentNode.childNodes[3];
                 return node.childNodes[1].childNodes[0].childNodes[0].className;
             }, searchSelector);
 
-        yield nightmare.click(`.${topPostClass}`).wait('h2');
+        yield nightmare.click(`.${topPostClass}`).wait('h1');
 
         const postClass = yield nightmare
             .evaluate(function () {
@@ -71,7 +72,7 @@ router.post('/', function (req, res) {
             }, spriteComment);
 
         for (let i = 0; i < posts; i++) {
-            nightmare.wait(1000);
+            nightmare.wait(Math.random() * (5 - 1) * 1000); // wait random time from 1 to 5 sec
 
             const liked = yield nightmare
                 .evaluate(function (selector) {
@@ -79,8 +80,10 @@ router.post('/', function (req, res) {
                 }, likeClass);
 
             if (heartClass === liked) nightmare.click(`.${likeClass}`); // like
-            nightmare.insert(commentSelector, comment) // comment
+            nightmare.type(commentSelector, comment) // comment
+                .wait(Math.random() * (5 - 2) * 1000) // wait random time from 2 to 5 sec
                 .type(commentSelector, '\u000d')
+                .wait(Math.random() * (5 - 1) * 1000) // wait random time from 1 to 5 sec
                 .click('.coreSpriteRightPaginationArrow'); // next
         }
 
