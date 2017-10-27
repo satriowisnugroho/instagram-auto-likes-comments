@@ -9,3 +9,10 @@ Instagram auto likes & comments posts by search query. Written in nodejs with [n
 ```
 $ node app.js
 ```
+
+or
+
+```
+$ npm run start
+```
+
